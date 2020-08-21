@@ -95,10 +95,12 @@ ui <-
       #},   striped = TRUE, width = "auto")
       output$view <- DT::renderDataTable(
         datasetInput(), options = list(
-          pageLength = 20, autoWidth = TRUE,
-          columnDefs = list(list( targets = 2, width = '600px')),
-          scrollX = TRUE
-        )
+          autoWidth = TRUE,
+          columnDefs = list(list(width = '100px', targets = c(0, 3))), #, 
+                          #  list(width = '200px', targets = c(1, 2))), 
+          scrollX = TRUE,
+          pageLength = 30
+        ), rownames= FALSE
 )
    
      
