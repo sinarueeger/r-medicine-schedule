@@ -3,7 +3,6 @@ library(googlesheets4)
 library(dplyr)
 library(tidyr)
 
-
 #' Swap times from one to another time zone
 #'
 #' @param time in format: 2020-08-27 11:00:00

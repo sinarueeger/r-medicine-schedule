@@ -119,7 +119,7 @@ ui <-
             tz_goal = input$tz
           ),
           "2020-08-28 (Saturday)" = update_schedule(
-            link = "https://docs.google.com/spreadsheets/d/1248vzzKb8paaytPGwwoxEXbF0Ctn1Y3n5IgZxqJdy6c/edit#gid=1253542401",
+            link = "https://docs.google.com/spreadsheets/d/1248vzzKb8paaytPGwwoxEXbF0Ctn1Y3n5IgZxqJdy6c/edit?usp=sharing",
             sheet = "2020-08-28",
             tz_goal = input$tz
           )
