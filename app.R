@@ -2,11 +2,12 @@ source("utils.R")
 library(shiny)
 library(shinydashboard)
 library(shinythemes)
+#dashboardPage(skin = "green")
 
 ui <-
   navbarPage(
-    "Change timezone for R/Medicine",
-    theme = shinytheme("flatly"),
+    title = "Change timezone for R/Medicine conference",
+    theme = shinytheme("sandstone"),
     tabPanel(
       "Schedule",
       # Sidebar layout with input and output definitions ----
@@ -43,67 +44,22 @@ ui <-
           
         ),
         # Main panel for displaying outputs ----
-        mainPanel(# Output: Header + table of distribution ----
-                  h4("Schedule"),
-                  tableOutput("view"))
+          box(
+            title = 'Schedule', width = NULL, status = 'primary',
+            DT::dataTableOutput('view')  
+          )
+
       )
       ),
-      tabPanel("About R/Medicine",
-               h2("About R/Medicine"),
-               fluidPage(HTML("<p>For all details about the R/Medicine conference, see <a href='https://events.linuxfoundation.org/r-medicine/program/schedule/'>https://events.linuxfoundation.org/r-medicine/program/schedule/</a></p>")
-               ))
+      tabPanel("About",
+               h2("About"),
+               fluidPage(HTML("<p>For all details about the R/Medicine conference, see <a href='https://events.linuxfoundation.org/r-medicine/program/schedule/'>https://events.linuxfoundation.org/r-medicine/program/schedule/</a>.</p>")),
+              fluidPage(HTML("<p>Propose changes to this app: <a href='https://github.com/sinarueeger/r-medicine-schedule'>https://github.com/sinarueeger/r-medicine-schedule</a>.</p>")
+                                   
+                         ))
     )
     
 
-    # # Define UI for dataset viewer app ----
-    # ui <- fluidPage(
-    
-    #     # App title ----
-    #     titlePanel("Change timezone for R/Medicine"),
-    #
-    #     # Sidebar layout with input and output definitions ----
-    #     sidebarLayout(
-    #
-    #         # Sidebar panel for inputs ----
-    #         sidebarPanel(
-    #
-    #             # Input: Select a dataset ----
-    #             selectInput("dataset", "Choose a day:",
-    #                         choices = c("2020-08-27 (Friday)", "2020-08-28 (Saturday)")),
-    #
-    #
-    #             # Input: Specify timezone ----
-    #             selectizeInput(
-    #               'tz', label = NULL, choices = OlsonNames(),
-    #               options = list(create = TRUE)
-    #             ),
-    #
-    #             # Include clarifying text ----
-    #             helpText("Select a day (in EDT) and your preferred time zone"),
-    #
-    #             # Button
-    #             downloadButton("downloadData", "Download"),
-    #
-    #             # Input: actionButton() to defer the rendering of output ----
-    #             # until the user explicitly clicks the button (rather than
-    #             # doing it immediately when inputs change). This is useful if
-    #             # the computations required to render output are inordinately
-    #             # time-consuming.
-    #             actionButton("update", "Update View")
-    #
-    #         ),
-    #
-    #         # Main panel for displaying outputs ----
-    #         mainPanel(
-    #
-    #             # Output: Header + table of distribution ----
-    #             h4("Schedule"),
-    #             tableOutput("view")
-    #         )
-    #
-    #     )
-    # )
-    
     # Define server logic to summarize and view selected dataset ----
     server <- function(input, output) {
       # Return the requested dataset ----
@@ -134,10 +90,21 @@ ui <-
       # The use of isolate() is necessary because we don't want the table
       # to update whenever input$obs changes (only when the user clicks
       # the action button)
-      output$view <- renderTable({
-        datasetInput()
-      },   striped = TRUE, width = "auto")
+      #output$view <- renderTable({
+      #  datasetInput()
+      #},   striped = TRUE, width = "auto")
+      output$view <- DT::renderDataTable(
+        datasetInput(), options = list(
+          pageLength = 20, autoWidth = TRUE,
+          columnDefs = list(list( targets = 2, width = '600px')),
+          scrollX = TRUE
+        )
+)
+   
+     
       
+      
+
       # Downloadable csv of selected dataset ----
       output$downloadData <- downloadHandler(
         filename = function() {
