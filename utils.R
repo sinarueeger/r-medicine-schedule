@@ -1,5 +1,5 @@
 library(lubridate)
-library(googlesheets4)
+library(readxl)
 library(dplyr)
 library(tidyr)
 
@@ -42,8 +42,8 @@ switch_timezone <-
 
 
 import_schedule <- function(link, sheet, tz_schedule = "US/Eastern") {
-  dat <- read_sheet(link, sheet = sheet, col_names = TRUE)
-
+  dat <- readxl::read_xlsx(link, sheet = sheet, col_names = TRUE)
+  
   ## special treatment for Birds of a Feather Sessions
   ind <- grep("Birds of a Feather Sessions", dat$talk_speaker)
   if(length(ind) > 0) for (idx in ind) dat[idx, "talk_speaker"] <- gsub("\n", "#", dat[idx, "talk_speaker"] )
@@ -66,9 +66,6 @@ import_schedule <- function(link, sheet, tz_schedule = "US/Eastern") {
   return(dat)
 }
 
-dat <- import_schedule(
-  link = "https://docs.google.com/spreadsheets/d/1248vzzKb8paaytPGwwoxEXbF0Ctn1Y3n5IgZxqJdy6c/edit#gid=1253542401", 
-  sheet = "2020-08-27")
 
 time_to_hour_minute <- function(time) {
   format(as.POSIXct(time,format="%H:%M:%S"),"%H:%M")
@@ -96,11 +93,6 @@ update_schedule <- function(link, sheet, tz_goal) {
   return(dat)  
 }
 
-dat <- update_schedule(
-  link = "https://docs.google.com/spreadsheets/d/1248vzzKb8paaytPGwwoxEXbF0Ctn1Y3n5IgZxqJdy6c/edit#gid=1253542401", 
-  sheet = "2020-08-28",
-  tz_goal = "Europe/Helsinki"
-  )
 
 
 
