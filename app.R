@@ -17,7 +17,7 @@ ui <-
           selectInput(
             "dataset",
             "Choose a day:",
-            choices = c("2020-08-27 (Friday)", "2020-08-28 (Saturday)")
+            choices = c("2020-08-26 (Thursday)", "2020-08-27 (Friday)", "2020-08-28 (Saturday)")
           ),
           
           
@@ -69,6 +69,11 @@ ui <-
       datasetInput <- eventReactive(input$update, {
         switch(
           input$dataset,
+          "2020-08-26 (Thursday)" = update_schedule(
+            link = "r_medicine_schedule.xlsx",
+            sheet = "2020-08-26",
+            tz_goal = input$tz
+          ),
           "2020-08-27 (Friday)" = update_schedule(
             link = "r_medicine_schedule.xlsx",
             sheet = "2020-08-27",
